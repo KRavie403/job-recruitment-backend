@@ -10,3 +10,5 @@ CREATE TABLE IF NOT EXISTS jobs (
     detail_url TEXT NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+#SELECT * FROM jobs;
