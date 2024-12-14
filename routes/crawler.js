@@ -2,13 +2,14 @@ const express = require("express");
 const axios = require("axios");
 const cheerio = require("cheerio");
 const db = require("../config/db");
+const { authenticateToken } = require("../middleware/authenticate");
 
 const router = express.Router();
 
 // 웹 크롤링 엔드포인트
-router.get("/scrape", async (req, res) => {
+router.get("/scrape", authenticateToken, async (req, res) => {
   try {
-    const url = "https://www.saramin.co.kr/zf_user/jobs/list";
+    const url = "https://www.saramin.co.kr/zf_user/jobs/list/job-category?page=";
     const { data } = await axios.get(url);
 
     const $ = cheerio.load(data);
@@ -25,6 +26,11 @@ router.get("/scrape", async (req, res) => {
       }
     });
 
+    // CSV 파일 저장
+    const filePath = path.join(__dirname, "../data/jobs.csv");
+    const csvData = jobs.map(job => `${job.title},${job.company},${job.location},${job.detailUrl}`).join("\n");
+    fs.writeFileSync(filePath, csvData);
+
     // DB에 데이터 저장
     for (let job of jobs) {
       const query = `
@@ -32,9 +38,9 @@ router.get("/scrape", async (req, res) => {
         VALUES (?, ?, ?, ?)
       `;
       await new Promise((resolve, reject) => {
-        db.query(query, [job.title, job.company, job.location, job.detailUrl], (err, result) => {
+        db.query(query, [job.title, job.company, job.location, job.detailUrl], (err) => {
           if (err) reject(err);
-          else resolve(result);
+          else resolve();
         });
       });
     }
