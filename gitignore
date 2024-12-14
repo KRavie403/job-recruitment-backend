@@ -1,70 +1,87 @@
-### Linux ###
-*~
-.fuse_hidden*
-.directory
-.Trash-*
-.nfs*
+### Linux
 
-### Node.js ###
+_~
+.fuse_hidden_
+.directory
+.Trash-_
+.nfs_
+
+### Node.js
+
 # Logs
+
+_.log
 logs/
 *.log
 npm-debug.log*
-yarn-debug.log*
-lerna-debug.log*
-.pnpm-debug.log*
+yarn-debug.log_
+lerna-debug.log\*
+.pnpm-debug.log\*
+yarn-error.log
 
 # Runtime data
+
 pids/
-*.pid
-*.seed
-*.pid.lock
+_.pid
+_.seed
+\*.pid.lock
 
 # Dependency directories
+
 node_modules/
 jspm_packages/
 bower_components/
 web_modules/
 
 # Coverage and instrumentation
+
 coverage/
 .nyc_output/
 coverage/lcov-report/
 
 # Optional cache directories
+
 .npm
 .eslintcache
 .stylelintcache
 
 # Environment variables
+
 .env
-.env.*.local
+.env.\*.local
 
 # Build output directories
+
 dist/
 .next/
 out/
 .nuxt/
 .svelte-kit/
 .cache/
+build/
 
 # Serverless build directories
+
 .serverless/
 .webpack/
 
 # DynamoDB Local
+
 .dynamodb/
 
 # VSCode Testing
+
 .vscode-test/
 
 # Temporary & Miscellaneous
-*.tmp
-*.temp
-~$*
-*.bak
-*.seed
 
-### MySQL ###
-*.sql
-*.db
+_.tmp
+_.temp
+~$\*
+_.bak
+_.seed
+
+### MySQL
+
+_.sql
+_.db
