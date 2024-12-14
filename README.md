@@ -61,8 +61,11 @@ project/
 
 4. **DB 초기화 (한 번만 실행) 서버 실행 후, 크롤링 경로를 호출:**
 
+   **Endpoint**: `GET /api/crawl/scrape`  
+   **Description**: 사람인 채용 정보를 크롤링하여 DB에 저장.
+
    ```
-   GET http://localhost:3000/api/crawl/scrape
+   GET http://113.198.66.79:17xxx/api/crawl/scrape
    ```
 
 ## 💡 주의 사항
