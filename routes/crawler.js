@@ -80,3 +80,5 @@ router.get("/scrape", authenticateToken, async (req, res) => {
     });
   }
 });
+
+module.exports = router; // 라우터 객체를 내보냄
