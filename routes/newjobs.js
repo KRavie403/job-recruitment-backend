@@ -4,8 +4,130 @@ const db = require("../config/db");
 const router = express.Router();
 
 /**
- * 신입 채용 공고 전체 조회 (필터링, 검색, 페이지네이션, 정렬 지원)
+ * @swagger
+ * tags:
+ *   name: Newjobs
+ *   description: 신입 공고 관련 API
  */
+/**
+ * @swagger
+ * /newjobs:
+ *   get:
+ *     summary: 신입 채용 공고 전체 조회
+ *     tags: [Newjobs]
+ *     description: 필터링, 검색, 페이지네이션, 정렬을 지원하는 신입 채용 공고를 조회합니다.
+ *     parameters:
+ *       - name: company_name
+ *         in: query
+ *         description: 회사명으로 검색합니다.
+ *         required: false
+ *         schema:
+ *           type: string
+ *       - name: title
+ *         in: query
+ *         description: 채용 공고 제목으로 검색합니다.
+ *         required: false
+ *         schema:
+ *           type: string
+ *       - name: location
+ *         in: query
+ *         description: 위치로 검색합니다.
+ *         required: false
+ *         schema:
+ *           type: string
+ *       - name: experience
+ *         in: query
+ *         description: 경력으로 검색합니다.
+ *         required: false
+ *         schema:
+ *           type: string
+ *       - name: education
+ *         in: query
+ *         description: 학력으로 검색합니다.
+ *         required: false
+ *         schema:
+ *           type: string
+ *       - name: employment_type
+ *         in: query
+ *         description: 고용 형태로 검색합니다.
+ *         required: false
+ *         schema:
+ *           type: string
+ *       - name: page
+ *         in: query
+ *         description: 페이지 번호 (기본값 1)
+ *         required: false
+ *         schema:
+ *           type: integer
+ *           default: 1
+ *       - name: limit
+ *         in: query
+ *         description: 한 페이지에 표시할 항목 수 (기본값 10)
+ *         required: false
+ *         schema:
+ *           type: integer
+ *           default: 10
+ *       - name: sortField
+ *         in: query
+ *         description: 정렬 기준 (기본값 "created_at")
+ *         required: false
+ *         schema:
+ *           type: string
+ *           default: "created_at"
+ *       - name: sortOrder
+ *         in: query
+ *         description: 정렬 순서 ("ASC" 또는 "DESC", 기본값 "DESC")
+ *         required: false
+ *         schema:
+ *           type: string
+ *           default: "DESC"
+ *     responses:
+ *       200:
+ *         description: 신입 채용 공고 목록 조회 성공
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       id:
+ *                         type: integer
+ *                       title:
+ *                         type: string
+ *                       company_name:
+ *                         type: string
+ *                       location:
+ *                         type: string
+ *                       experience:
+ *                         type: string
+ *                       education:
+ *                         type: string
+ *                       employment_type:
+ *                         type: string
+ *                       deadline:
+ *                         type: string
+ *                         format: date
+ *                 totalCount:
+ *                   type: integer
+ *                 currentPage:
+ *                   type: integer
+ *                 totalPages:
+ *                   type: integer
+ *       500:
+ *         description: 서버 오류
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ */
+
 router.get("/", (req, res) => {
   const {
     company_name,
@@ -84,8 +206,64 @@ router.get("/", (req, res) => {
 });
 
 /**
- * 특정 신입 채용 공고 조회
+ * @swagger
+ * /newjobs/{id}:
+ *   get:
+ *     summary: 특정 신입 채용 공고 조회
+ *     tags: [Newjobs]
+ *     description: ID로 특정 신입 채용 공고를 조회합니다.
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         required: true
+ *         description: 채용 공고의 고유 ID
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       200:
+ *         description: 신입 채용 공고 조회 성공
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 id:
+ *                   type: integer
+ *                 title:
+ *                   type: string
+ *                 company_name:
+ *                   type: string
+ *                 location:
+ *                   type: string
+ *                 experience:
+ *                   type: string
+ *                 education:
+ *                   type: string
+ *                 employment_type:
+ *                   type: string
+ *                 deadline:
+ *                   type: string
+ *                   format: date
+ *       404:
+ *         description: 해당 ID의 채용 공고를 찾을 수 없음
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *       500:
+ *         description: 서버 오류
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
  */
+
 router.get("/:id", (req, res) => {
   const query = "SELECT * FROM newjobs WHERE id = ?";
   db.query(query, [req.params.id], (err, result) => {
@@ -96,8 +274,61 @@ router.get("/:id", (req, res) => {
 });
 
 /**
- * 신입 채용 공고 생성
+ * @swagger
+ * /newjobs:
+ *   post:
+ *     summary: 신입 채용 공고 생성
+ *     tags: [Newjobs]
+ *     description: 새로운 신입 채용 공고를 생성합니다.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               title:
+ *                 type: string
+ *               link:
+ *                 type: string
+ *               company_name:
+ *                 type: string
+ *               location:
+ *                 type: string
+ *               experience:
+ *                 type: string
+ *               education:
+ *                 type: string
+ *               employment_type:
+ *                 type: string
+ *               deadline:
+ *                 type: string
+ *                 format: date
+ *               salary:
+ *                 type: string
+ *               job_id:
+ *                 type: string
+ *     responses:
+ *       201:
+ *         description: 신입 채용 공고 생성 성공
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *       500:
+ *         description: 서버 오류
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
  */
+
 router.post("/", (req, res) => {
   const { title, link, company_name, location, experience, education, employment_type, deadline, salary, job_id } = req.body;
   const query = `
@@ -111,8 +342,68 @@ router.post("/", (req, res) => {
 });
 
 /**
- * 신입 채용 공고 수정
+ * @swagger
+ * /newjobs/{id}:
+ *   put:
+ *     summary: 신입 채용 공고 수정
+ *     tags: [Newjobs]
+ *     description: 특정 신입 채용 공고의 정보를 수정합니다.
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         required: true
+ *         description: 수정할 채용 공고의 고유 ID
+ *         schema:
+ *           type: integer
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               title:
+ *                 type: string
+ *               link:
+ *                 type: string
+ *               company_name:
+ *                 type: string
+ *               location:
+ *                 type: string
+ *               experience:
+ *                 type: string
+ *               education:
+ *                 type: string
+ *               employment_type:
+ *                 type: string
+ *               deadline:
+ *                 type: string
+ *                 format: date
+ *               salary:
+ *                 type: string
+ *               job_id:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: 신입 채용 공고 수정 성공
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *       500:
+ *         description: 서버 오류
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
  */
+
 router.put("/:id", (req, res) => {
   const { title, link, company_name, location, experience, education, employment_type, deadline, salary, job_id } = req.body;
   const query = `
@@ -126,8 +417,40 @@ router.put("/:id", (req, res) => {
 });
 
 /**
- * 신입 채용 공고 삭제
+ * @swagger
+ * /newjobs/{id}:
+ *   delete:
+ *     summary: 신입 채용 공고 삭제
+ *     tags: [Newjobs]
+ *     description: 특정 신입 채용 공고를 삭제합니다.
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         required: true
+ *         description: 삭제할 채용 공고의 고유 ID
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       200:
+ *         description: 신입 채용 공고 삭제 성공
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *       500:
+ *         description: 서버 오류
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
  */
+
 router.delete("/:id", (req, res) => {
   const query = "DELETE FROM newjobs WHERE id = ?";
   db.query(query, [req.params.id], (err) => {
