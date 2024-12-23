@@ -4,6 +4,94 @@ const db = require("../config/db");
 const router = express.Router();
 
 /**
+ * @swagger
+ * tags:
+ *   name: Companies
+ *   description: 회사 관련 API
+ */
+
+/**
+ * @swagger
+ * /companies:
+ *   get:
+ *     summary: 회사 목록 조회
+ *     tags: [Companies]
+ *     parameters:
+ *       - in: query
+ *         name: company_name
+ *         schema:
+ *           type: string
+ *         description: 회사 이름 검색
+ *       - in: query
+ *         name: industry
+ *         schema:
+ *           type: string
+ *         description: 산업 필터
+ *       - in: query
+ *         name: location
+ *         schema:
+ *           type: string
+ *         description: 위치 필터
+ *       - in: query
+ *         name: page
+ *         schema:
+ *           type: integer
+ *           default: 1
+ *         description: 페이지 번호
+ *       - in: query
+ *         name: limit
+ *         schema:
+ *           type: integer
+ *           default: 10
+ *         description: 페이지당 항목 수
+ *       - in: query
+ *         name: sortField
+ *         schema:
+ *           type: string
+ *           default: establishment
+ *         description: 정렬 기준 필드
+ *       - in: query
+ *         name: sortOrder
+ *         schema:
+ *           type: string
+ *           default: DESC
+ *         description: 정렬 순서 (ASC 또는 DESC)
+ *     responses:
+ *       200:
+ *         description: 회사 목록
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       id:
+ *                         type: integer
+ *                       company_name:
+ *                         type: string
+ *                       establishment:
+ *                         type: string
+ *                       representative:
+ *                         type: string
+ *                       industry:
+ *                         type: string
+ *                       financial:
+ *                         type: string
+ *                       location:
+ *                         type: string
+ *                 totalCount:
+ *                   type: integer
+ *                 currentPage:
+ *                   type: integer
+ *                 totalPages:
+ *                   type: integer
+ */
+
+/**
  * 회사 목록 조회 (필터링, 검색, 페이지네이션, 정렬 지원)
  */
 router.get("/", (req, res) => {
@@ -66,6 +154,45 @@ router.get("/", (req, res) => {
 });
 
 /**
+ * @swagger
+ * /companies/{id}:
+ *   get:
+ *     summary: 특정 회사 조회
+ *     tags: [Companies]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: 회사 ID
+ *     responses:
+ *       200:
+ *         description: 회사 정보
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 id:
+ *                   type: integer
+ *                 company_name:
+ *                   type: string
+ *                 establishment:
+ *                   type: string
+ *                 representative:
+ *                   type: string
+ *                 industry:
+ *                   type: string
+ *                 financial:
+ *                   type: string
+ *                 location:
+ *                   type: string
+ *       404:
+ *         description: 회사를 찾을 수 없음
+ */
+
+/**
  * 특정 회사 조회
  */
 router.get("/:id", (req, res) => {
@@ -76,6 +203,41 @@ router.get("/:id", (req, res) => {
     res.status(200).json(result[0]);
   });
 });
+
+/**
+ * @swagger
+ * /companies:
+ *   post:
+ *     summary: 회사 생성
+ *     tags: [Companies]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - company_name
+ *               - establishment
+ *             properties:
+ *               company_name:
+ *                 type: string
+ *               establishment:
+ *                 type: string
+ *               representative:
+ *                 type: string
+ *               industry:
+ *                 type: string
+ *               financial:
+ *                 type: string
+ *               location:
+ *                 type: string
+ *     responses:
+ *       201:
+ *         description: 회사가 성공적으로 생성됨
+ *       500:
+ *         description: 데이터베이스 오류
+ */
 
 /**
  * 회사 생성
@@ -93,6 +255,45 @@ router.post("/", (req, res) => {
 });
 
 /**
+ * @swagger
+ * /companies/{id}:
+ *   put:
+ *     summary: 회사 수정
+ *     tags: [Companies]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: 회사 ID
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               company_name:
+ *                 type: string
+ *               establishment:
+ *                 type: string
+ *               representative:
+ *                 type: string
+ *               industry:
+ *                 type: string
+ *               financial:
+ *                 type: string
+ *               location:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: 회사가 성공적으로 수정됨
+ *       500:
+ *         description: 데이터베이스 오류
+ */
+
+/**
  * 회사 수정
  */
 router.put("/:id", (req, res) => {
@@ -108,6 +309,26 @@ router.put("/:id", (req, res) => {
 });
 
 /**
+ * @swagger
+ * /companies/{id}:
+ *   delete:
+ *     summary: 회사 삭제
+ *     tags: [Companies]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: 회사 ID
+ *     responses:
+ *       200:
+ *         description: 회사가 성공적으로 삭제됨
+ *       500:
+ *         description: 데이터베이스 오류
+ */
+
+/**
  * 회사 삭제
  */
 router.delete("/:id", (req, res) => {
@@ -117,6 +338,28 @@ router.delete("/:id", (req, res) => {
     res.status(200).json({ message: "회사가 성공적으로 삭제되었습니다" });
   });
 });
+
+/**
+ * @swagger
+ * /companies/aggregate/industry:
+ *   get:
+ *     summary: 산업별 회사 수 조회
+ *     tags: [Companies]
+ *     responses:
+ *       200:
+ *         description: 산업별 회사 수 목록
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   industry:
+ *                     type: string
+ *                   company_count:
+ *                     type: integer
+ */
 
 /**
  * 데이터 집계 API (산업별 회사 수)
@@ -134,6 +377,28 @@ router.get("/aggregate/industry", (req, res) => {
     res.status(200).json(results);
   });
 });
+
+/**
+ * @swagger
+ * /companies/aggregate/location:
+ *   get:
+ *     summary: 지역별 회사 수 조회
+ *     tags: [Companies]
+ *     responses:
+ *       200:
+ *         description: 지역별 회사 수 목록
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   location:
+ *                     type: string
+ *                   company_count:
+ *                     type: integer
+ */
 
 /**
  * 데이터 집계 API (지역별 회사 수)
