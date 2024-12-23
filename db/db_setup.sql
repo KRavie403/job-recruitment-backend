@@ -18,6 +18,13 @@ CREATE TABLE IF NOT EXISTS jobs (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+-- 인덱스 추가
+CREATE INDEX idx_jobs_title ON jobs (title);
+CREATE INDEX idx_jobs_company ON jobs (company);
+CREATE INDEX idx_jobs_location ON jobs (location);
+CREATE INDEX idx_jobs_deadline ON jobs (deadline);
+
+
 -- 회사 정보 모델 (companies)
 CREATE TABLE IF NOT EXISTS companies (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -50,6 +57,10 @@ CREATE TABLE IF NOT EXISTS users (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+-- 인덱스 추가
+CREATE UNIQUE INDEX idx_users_email ON users (email);
+
+
 -- 지원 내역 모델 (applications)
 CREATE TABLE IF NOT EXISTS applications (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -59,6 +70,11 @@ CREATE TABLE IF NOT EXISTS applications (
     FOREIGN KEY (user_id) REFERENCES users(id),
     FOREIGN KEY (job_id) REFERENCES jobs(id)
 );
+
+-- 인덱스 추가
+CREATE INDEX idx_applications_user_id ON applications (user_id);
+CREATE INDEX idx_applications_job_id ON applications (job_id);
+
 
 -- 북마크/관심공고 모델 (bookmarks)
 CREATE TABLE IF NOT EXISTS bookmarks (
