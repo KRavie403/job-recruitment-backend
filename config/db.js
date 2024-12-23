@@ -12,9 +12,22 @@ const connection = mysql.createConnection({
 connection.connect((err) => {
   if (err) {
     console.error("Database connection failed:", err);
+    setTimeout(connectToDatabase, 5000); // 5초 후 재시도
   } else {
     console.log("Connected to MySQL database.");
   }
 });
+
+// 재연결 함수
+function connectToDatabase() {
+  connection.connect((err) => {
+    if (err) {
+      console.error("Database connection failed:", err);
+      setTimeout(connectToDatabase, 5000); // 재시도
+    } else {
+      console.log("Connected to MySQL database.");
+    }
+  });
+}
 
 module.exports = connection;
