@@ -1,5 +1,6 @@
 const express = require("express");
-const crawlerRoutes = require("./routes/crawler");
+const db = require('./config/db');
+const authRoutes = require("./routes/auth");
 const jobsRoutes = require("./routes/jobs");
 const companiesRoutes = require("./routes/companies");
 const applicationsRoutes = require("./routes/applications");
@@ -13,12 +14,15 @@ const userRoutes = require("./routes/users");
 const app = express();
 const PORT = 8080;
 
+app.use(express.json());
+
 // Routes
 app.get('/', function (req, res) {
   res.send('Hello World!');
 });
 
 // Routes
+app.use("/api/auth", authRoutes);
 app.use("/api/jobs", jobsRoutes);
 app.use("/api/companies", companiesRoutes);
 app.use("/api/applications", applicationsRoutes);
