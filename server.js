@@ -6,8 +6,8 @@ const companiesRoutes = require("./routes/companies");
 const applicationsRoutes = require("./routes/applications");
 const stationsRoutes = require("./routes/stations");
 const bookmarksRoutes = require("./routes/bookmarks");
-const educationRoutes = require("./routes/education_requirements");
-const experienceRoutes = require("./routes/experience_requirements");
+const internsRoutes = require("./routes/interns");
+const newjobsRoutes = require("./routes/newjobs");
 const userRoutes = require("./routes/users");
 
 
@@ -28,8 +28,8 @@ app.use("/api/companies", companiesRoutes);
 app.use("/api/applications", applicationsRoutes);
 app.use("/api/stations", stationsRoutes);
 app.use("/api/bookmarks", bookmarksRoutes);
-app.use("/api/education-requirements", educationRoutes);
-app.use("/api/experience-requirements", experienceRoutes);
+app.use("/api/interns", internsRoutes);
+app.use("/api/newjobs", newjobsRoutes);
 app.use("/api/users", userRoutes);
 // app.get("/api/crawl", crawlerRoutes);
 
