@@ -29,7 +29,7 @@ CREATE INDEX idx_jobs_deadline ON jobs (deadline);
 CREATE TABLE IF NOT EXISTS companies (
     id INT AUTO_INCREMENT PRIMARY KEY,
     company_name VARCHAR(255) NOT NULL,  -- 회사명
-    establishment DATE,                  -- 설립일
+    establishment VARCHAR(255),          -- 설립일
     representative VARCHAR(255),        -- 대표자명
     industry VARCHAR(255),              -- 업종
     financial TEXT,                      -- 재무 정보
@@ -44,7 +44,7 @@ CREATE TABLE IF NOT EXISTS stations (
     job_title VARCHAR(255) NOT NULL,     -- 공고 제목
     job_link TEXT NOT NULL,              -- 공고 링크
     location VARCHAR(255),               -- 지역
-    deadline DATE,                       -- 마감일
+    deadline VARCHAR(255),               -- 마감일
     nearest_station VARCHAR(255),        -- 가까운 역
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
