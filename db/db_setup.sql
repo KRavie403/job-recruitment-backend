@@ -128,3 +128,11 @@ CREATE INDEX idx_newjobs_title ON newjobs (title);
 CREATE INDEX idx_newjobs_company_name ON newjobs (company_name);
 CREATE INDEX idx_newjobs_location ON newjobs (location);
 CREATE INDEX idx_newjobs_deadline ON newjobs (deadline);
+
+-- 로그인 이력 모델 (login_history)
+CREATE TABLE IF NOT EXISTS login_history (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,               -- 사용자 ID (users 테이블과 연결)
+    login_time TIMESTAMP DEFAULT NOW(), -- 로그인 시간
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
