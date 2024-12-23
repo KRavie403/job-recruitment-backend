@@ -7,7 +7,7 @@ const router = express.Router();
  * @swagger
  * tags:
  *   name: Stations
- *   description: 연세권 공고 관련 API
+ *   description: 역세권 공고 관련 API
  */
 /**
  * @swagger
