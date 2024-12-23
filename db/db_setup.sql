@@ -5,9 +5,9 @@ USE job_database;
 -- 채용 공고 정보 모델 (jobs)
 CREATE TABLE IF NOT EXISTS jobs (
     id INT AUTO_INCREMENT PRIMARY KEY,
+    company VARCHAR(255) NOT NULL,  -- 회사명
     title VARCHAR(255) NOT NULL,
     link TEXT NOT NULL,             -- 공고 링크
-    company VARCHAR(255) NOT NULL,  -- 회사명
     location VARCHAR(255),         -- 지역
     experience VARCHAR(255),       -- 경력
     education VARCHAR(255),        -- 학력
@@ -33,7 +33,7 @@ CREATE TABLE IF NOT EXISTS companies (
     representative VARCHAR(255),        -- 대표자명
     industry VARCHAR(255),              -- 업종
     financial TEXT,                      -- 재무 정보
-    location VARCHAR(255),              -- 지역
+    location VARCHAR(255),              -- 기업주소
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -86,21 +86,45 @@ CREATE TABLE IF NOT EXISTS bookmarks (
     FOREIGN KEY (job_id) REFERENCES jobs(id)
 );
 
--- 학력 요구 사항 모델 (education_requirements)
-CREATE TABLE IF NOT EXISTS education_requirements (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    job_id INT,                          -- 채용 공고 ID (Foreign Key)
-    education_level VARCHAR(255) NOT NULL, -- 학력 요구 사항
-    FOREIGN KEY (job_id) REFERENCES jobs(id)
+-- 인턴 채용 공고 정보 모델 (interns)
+CREATE TABLE IF NOT EXISTS interns (
+    id INT AUTO_INCREMENT PRIMARY KEY,          -- 인턴 공고 고유 ID
+    company_name VARCHAR(255) NOT NULL,         -- 회사명
+    title VARCHAR(255) NOT NULL,                -- 공고 제목
+    link TEXT NOT NULL,                         -- 공고 링크
+    location VARCHAR(255),                      -- 지역
+    experience VARCHAR(255),                    -- 경력
+    education VARCHAR(255),                     -- 학력
+    deadline VARCHAR(255),                      -- 마감일
+    employment_type VARCHAR(255),               -- 고용형태
+    salary VARCHAR(255),                        -- 연봉정보
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP  -- 등록일
 );
 
--- 경력 요구 사항 모델 (experience_requirements)
-CREATE TABLE IF NOT EXISTS experience_requirements (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    job_id INT,                          -- 채용 공고 ID (Foreign Key)
-    experience_level VARCHAR(255) NOT NULL, -- 경력 요구 사항
-    FOREIGN KEY (job_id) REFERENCES jobs(id)
+-- 인덱스 추가
+CREATE INDEX idx_interns_title ON interns (title);
+CREATE INDEX idx_interns_company_name ON interns (company_name);
+CREATE INDEX idx_interns_location ON interns (location);
+CREATE INDEX idx_interns_deadline ON interns (deadline);
+
+
+-- 신입 요구 사항 모델 (newjobs)
+CREATE TABLE IF NOT EXISTS newjobs (
+    id INT AUTO_INCREMENT PRIMARY KEY,          -- 신입 공고 고유 ID
+    company_name VARCHAR(255) NOT NULL,         -- 회사명
+    title VARCHAR(255) NOT NULL,                -- 공고 제목
+    link TEXT NOT NULL,                         -- 공고 링크
+    location VARCHAR(255),                      -- 지역
+    experience VARCHAR(255),                    -- 경력
+    education VARCHAR(255),                     -- 학력
+    deadline VARCHAR(255),                      -- 마감일
+    employment_type VARCHAR(255),               -- 고용형태
+    salary VARCHAR(255),                        -- 연봉정보
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP  -- 등록일
 );
 
-# 데이터 조회 예시: 채용 공고 테이블 (jobs)
-# SELECT * FROM jobs;
+-- 인덱스 추가
+CREATE INDEX idx_newjobs_title ON newjobs (title);
+CREATE INDEX idx_newjobs_company_name ON newjobs (company_name);
+CREATE INDEX idx_newjobs_location ON newjobs (location);
+CREATE INDEX idx_newjobs_deadline ON newjobs (deadline);
