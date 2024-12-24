@@ -18,11 +18,28 @@
 project/
 ├── config/ # DB 연결 정보 파일
 │ └── db.js
+│ └── .env.example  # 환경 변수수
+├── db/ # DB 정보 파일
+│ └── crawled-data.json
+│ └── db_setup.sql
+│ └── saramin.csv
+├── middleware/
+│ └── authenticate.js
 ├── routes/
-│ └── crawler.js
+│ └── applications.js
+│ └── auth.js
+│ └── bookmarks.js
+│ └── companies.js
+│ └── interns.js
+│ └── jobs.js
+│ └── newjobs.js
+│ └── stations.js
+│ └── userss.js
+├── crawler.js
 ├── server.js
 ├── .gitignore
 ├── README.md
+├── LICENSE
 ├── package.json
 └── swagger.js
 ```
@@ -39,7 +56,9 @@ project/
 
    ```
 
-2. **DB 테이블 생성 MySQL에서 테이블 생성**
+2. **데이터 크롤링**
+
+3. **DB 테이블 생성 MySQL에서 테이블 생성**
 
    ```
     CREATE DATABASE IF NOT EXISTS job_database;
@@ -183,13 +202,13 @@ project/
 
    ```
 
-3. **서버 실행**
+4. **서버 실행**
 
    ```
-   npm start
+   ssh -i "키 경로로" -p 포트번호 ubuntu@앱주소
    ```
 
-4. **DB 초기화 (한 번만 실행) 서버 실행 후, 크롤링 경로를 호출:**
+5. **DB 초기화 (한 번만 실행) 서버 실행 후, 크롤링 경로를 호출:**
 
    **Endpoint**: `GET /api/crawl/scrape`  
    **Description**: 사람인 채용 정보를 크롤링하여 DB에 저장.
@@ -202,3 +221,5 @@ project/
 
 - 크롤링 데이터는 서버 시작 후 DB에 저장되며, DB는 한 번만 채워집니다.
 - 웹사이트 과도한 트래픽 차단을 방지하기 위해 요청 간격을 유의했습니다.
+
+5.
