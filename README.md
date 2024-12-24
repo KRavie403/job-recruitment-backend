@@ -1,4 +1,4 @@
-# Job Recruitment Backend with Node.js & Express.js
+# 구인구직 백엔드 서버 만들기 with Node.js & Express.js
 
 ## 🚀 프로젝트 소개
 
@@ -16,210 +16,162 @@
 
 ```
 project/
-├── config/ # DB 연결 정보 파일
-│ └── db.js
-│ └── .env.example  # 환경 변수수
-├── db/ # DB 정보 파일
-│ └── crawled-data.json
-│ └── db_setup.sql
-│ └── saramin.csv
-├── middleware/
-│ └── authenticate.js
-├── routes/
-│ └── applications.js
-│ └── auth.js
-│ └── bookmarks.js
-│ └── companies.js
-│ └── interns.js
-│ └── jobs.js
-│ └── newjobs.js
-│ └── stations.js
-│ └── userss.js
-├── crawler.js
-├── server.js
-├── .gitignore
-├── README.md
-├── LICENSE
-├── package.json
-└── swagger.js
+├── config/ # 프로젝트 환경설정 관련 파일
+│   ├── db.js         # 데이터베이스 연결 설정
+│   └── .env.example  # 환경 변수 예제 파일
+├── db/ # 데이터베이스 관련 리소스
+│   ├── crawled-data.json # 크롤링된 데이터 샘플
+│   ├── db_setup.sql      # 데이터베이스 초기화 SQL 파일
+│   └── saramin.csv       # 크롤링한 데이터의 CSV 파일
+├── middleware/ # 미들웨어 파일들
+│   └── authenticate.js  # JWT 인증 미들웨어
+├── routes/ # 각 기능별 API 엔드포인트 정의
+│   ├── applications.js  # 채용 지원 관련 엔드포인트
+│   ├── auth.js          # 인증 및 사용자 관리 API
+│   ├── bookmarks.js     # 즐겨찾기 관련 API
+│   ├── companies.js     # 회사 정보 API
+│   ├── interns.js       # 인턴 정보 API
+│   ├── jobs.js          # 채용 공고 API
+│   ├── newjobs.js       # 최신 채용 공고 API
+│   ├── stations.js      # 위치 및 지하철 관련 API
+│   └── users.js         # 사용자 관련 API
+├── crawler.js            # 채용 공고 데이터 크롤러
+├── server.js             # Express 서버 진입점
+├── swagger.js            # Swagger 설정 파일
+├── .gitignore            # Git에서 무시할 파일 및 디렉토리
+├── README.md             # 프로젝트 설명 파일
+├── LICENSE               # 프로젝트 라이선스
+├── package.json          # 프로젝트 의존성 및 스크립트
+└── package-lock.json     # 고정된 패키지 버전 정보
+
 ```
+
+## 🌟 주요 기능
+
+1. **채용 공고 크롤링**
+
+- 사람인 데이터를 크롤링하여 MySQL 데이터베이스에 저장.
+- Axios와 Cheerio를 사용한 효율적인 데이터 추출.
+
+2. **Jobs API**
+
+- 채용 공고 목록 조회, 검색, 필터링, 정렬.
+- 공고의 상세 정보 제공.
+
+3. **Auth API**
+
+- 회원가입 및 로그인 기능.
+- JWT를 사용한 사용자 인증 및 토큰 갱신.
+- 비밀번호 암호화를 통해 보안 강화.
+
+4. **Applications API**
+
+- 사용자 채용 지원 관리.
+- 지원 내역 확인 및 삭제.
+- 관심심 등록
+
+5. **Bookmarks API**
+
+- 사용자가 관심 있는 채용 공고를 즐겨찾기로 관리.
+- 즐겨찾기 추가 및 제거 기능 제공.
+
+6. **Companies API**
+
+- 회사 목록 조회, 검색, 필터링.
+- 회사 상세 정보 제공.
+
+7. **Interns API**
+
+- 인턴 공고 목록 조회.
+- 필터를 통해 적합한 인턴십 공고 검색.
+
+8. **Newjobs API**
+
+- 신규 채용 공고 조회.
+- 최신 공고의 빠른 접근 제공.
+
+9. **Stations API**
+
+- 채용 공고와 연계된 위치 정보 제공.
+- 특정 지하철역 주변 채용 공고 검색 가능.
+
+10. **Users API**
+
+- 사용자 정보 관리.
+- 프로필 수정 및 탈퇴 기능 제공.
+
+11. **Swagger UI를 사용한 API 문서화**
+
+- Swagger UI를 통해 쉽게 API를 테스트하고 확인 가능.
+
+12. **데이터베이스 초기화 스크립트**
+
+- db_setup.sql을 사용하여 데이터베이스를 손쉽게 초기화.
 
 ## 💻 설치 및 실행 방법
 
-1. **패키지 설치**
+1. **환경 변수 설정**
+   이 프로젝트는 `.env` 파일을 사용하여 환경 변수를 설정합니다.
+   저장소의 `.env.example` 파일을 참고하여 `.env` 파일을 생성하고 아래와 같이 수정합니다:
+
+   ```bash
+   cp .env.example .env
+   ```
+
+2. **패키지 설치**
 
    ```bash
    npm install
    npm install express mysql axios cheerio dotenv json2csv
    npm install swagger-jsdoc swagger-ui-express
    npm install jsonwebtoken bcrypt express-validator
-
+   npm install eslint prettier eslint-config-prettier eslint-plugin-prettier --save-dev
+   npm install nodemon --save-dev
    ```
 
-2. **데이터 크롤링**
-
-3. **DB 테이블 생성 MySQL에서 테이블 생성**
+3. **서버 실행**
 
    ```
-    CREATE DATABASE IF NOT EXISTS job_database;
-
-    USE job_database;
-
-    -- 채용 공고 정보 모델 (jobs)
-    CREATE TABLE IF NOT EXISTS jobs (
-        id INT AUTO_INCREMENT PRIMARY KEY,
-        company VARCHAR(255) NOT NULL,  -- 회사명
-        title VARCHAR(255) NOT NULL,
-        link TEXT NOT NULL,             -- 공고 링크
-        location VARCHAR(255),         -- 지역
-        experience VARCHAR(255),       -- 경력
-        education VARCHAR(255),        -- 학력
-        employment_type VARCHAR(255),  -- 고용형태
-        deadline DATE,                 -- 마감일
-        sector VARCHAR(255),           -- 직무 분야
-        salary VARCHAR(255),           -- 연봉
-        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-    );
-
-    -- 인덱스 추가
-    CREATE INDEX idx_jobs_title ON jobs (title);
-    CREATE INDEX idx_jobs_company ON jobs (company);
-    CREATE INDEX idx_jobs_location ON jobs (location);
-    CREATE INDEX idx_jobs_deadline ON jobs (deadline);
-
-
-    -- 회사 정보 모델 (companies)
-    CREATE TABLE IF NOT EXISTS companies (
-        id INT AUTO_INCREMENT PRIMARY KEY,
-        company_name VARCHAR(255) NOT NULL,  -- 회사명
-        establishment VARCHAR(255),          -- 설립일
-        representative VARCHAR(255),        -- 대표자명
-        industry VARCHAR(255),              -- 업종
-        financial TEXT,                      -- 재무 정보
-        location VARCHAR(255),              -- 기업주소
-        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-    );
-
-    -- 가까운역 정보 모델 (stations)
-    CREATE TABLE IF NOT EXISTS stations (
-        id INT AUTO_INCREMENT PRIMARY KEY,
-        company_name VARCHAR(255) NOT NULL,  -- 회사명
-        job_title VARCHAR(255) NOT NULL,     -- 공고 제목
-        job_link TEXT NOT NULL,              -- 공고 링크
-        location VARCHAR(255),               -- 지역
-        deadline VARCHAR(255),               -- 마감일
-        nearest_station VARCHAR(255),        -- 가까운 역
-        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-    );
-
-    -- 사용자 정보 모델 (users)
-    CREATE TABLE IF NOT EXISTS users (
-        id INT AUTO_INCREMENT PRIMARY KEY,
-        email VARCHAR(255) UNIQUE NOT NULL,  -- 이메일 (고유)
-        password VARCHAR(255) NOT NULL,      -- 비밀번호
-        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-    );
-
-    -- 인덱스 추가
-    CREATE UNIQUE INDEX idx_users_email ON users (email);
-
-
-    -- 지원 내역 모델 (applications)
-    CREATE TABLE IF NOT EXISTS applications (
-        id INT AUTO_INCREMENT PRIMARY KEY,
-        user_id INT,                         -- 사용자 ID (Foreign Key)
-        job_id INT,                          -- 채용 공고 ID (Foreign Key)
-        application_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP, -- 지원 날짜
-        FOREIGN KEY (user_id) REFERENCES users(id),
-        FOREIGN KEY (job_id) REFERENCES jobs(id)
-    );
-
-    -- 인덱스 추가
-    CREATE INDEX idx_applications_user_id ON applications (user_id);
-    CREATE INDEX idx_applications_job_id ON applications (job_id);
-
-
-    -- 북마크/관심공고 모델 (bookmarks)
-    CREATE TABLE IF NOT EXISTS bookmarks (
-        id INT AUTO_INCREMENT PRIMARY KEY,
-        user_id INT,                         -- 사용자 ID (Foreign Key)
-        job_id INT,                          -- 채용 공고 ID (Foreign Key)
-        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, -- 생성일
-        FOREIGN KEY (user_id) REFERENCES users(id),
-        FOREIGN KEY (job_id) REFERENCES jobs(id)
-    );
-
-    -- 인턴 채용 공고 정보 모델 (interns)
-    CREATE TABLE IF NOT EXISTS interns (
-        id INT AUTO_INCREMENT PRIMARY KEY,          -- 인턴 공고 고유 ID
-        company_name VARCHAR(255) NOT NULL,         -- 회사명
-        title VARCHAR(255) NOT NULL,                -- 공고 제목
-        link TEXT NOT NULL,                         -- 공고 링크
-        location VARCHAR(255),                      -- 지역
-        experience VARCHAR(255),                    -- 경력
-        education VARCHAR(255),                     -- 학력
-        deadline VARCHAR(255),                      -- 마감일
-        employment_type VARCHAR(255),               -- 고용형태
-        salary VARCHAR(255),                        -- 연봉정보
-        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP  -- 등록일
-    );
-
-    -- 인덱스 추가
-    CREATE INDEX idx_interns_title ON interns (title);
-    CREATE INDEX idx_interns_company_name ON interns (company_name);
-    CREATE INDEX idx_interns_location ON interns (location);
-    CREATE INDEX idx_interns_deadline ON interns (deadline);
-
-
-    -- 신입 요구 사항 모델 (newjobs)
-    CREATE TABLE IF NOT EXISTS newjobs (
-        id INT AUTO_INCREMENT PRIMARY KEY,          -- 신입 공고 고유 ID
-        company_name VARCHAR(255) NOT NULL,         -- 회사명
-        title VARCHAR(255) NOT NULL,                -- 공고 제목
-        link TEXT NOT NULL,                         -- 공고 링크
-        location VARCHAR(255),                      -- 지역
-        experience VARCHAR(255),                    -- 경력
-        education VARCHAR(255),                     -- 학력
-        deadline VARCHAR(255),                      -- 마감일
-        employment_type VARCHAR(255),               -- 고용형태
-        salary VARCHAR(255),                        -- 연봉정보
-        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP  -- 등록일
-    );
-
-    -- 인덱스 추가
-    CREATE INDEX idx_newjobs_title ON newjobs (title);
-    CREATE INDEX idx_newjobs_company_name ON newjobs (company_name);
-    CREATE INDEX idx_newjobs_location ON newjobs (location);
-    CREATE INDEX idx_newjobs_deadline ON newjobs (deadline);
-
-    -- 로그인 이력 모델 (login_history)
-    CREATE TABLE IF NOT EXISTS login_history (
-        id INT AUTO_INCREMENT PRIMARY KEY,
-        user_id INT NOT NULL,               -- 사용자 ID (users 테이블과 연결)
-        login_time TIMESTAMP DEFAULT NOW(), -- 로그인 시간
-        FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
-    );
-
+   ssh -i "키 경로" -p 포트번호 ubuntu@주소
    ```
 
-4. **서버 실행**
+## 📦 빌드 및 배포
+
+1. 프로덕션 환경 빌드 프로덕션 환경에서 실행하기 위해 Node.js 환경을 production으로 설정:
 
    ```
-   ssh -i "키 경로로" -p 포트번호 ubuntu@앱주소
+   export NODE_ENV=production
    ```
 
-5. **DB 초기화 (한 번만 실행) 서버 실행 후, 크롤링 경로를 호출:**
-
-   **Endpoint**: `GET /api/crawl/scrape`  
-   **Description**: 사람인 채용 정보를 크롤링하여 DB에 저장.
+2. 프로덕션 의존성 설치 개발 의존성을 제외한 프로덕션 의존성만 설치:
 
    ```
-   GET http://113.198.66.79:17xxx/api/crawl/scrape
+   npm install --production
    ```
 
-## 💡 주의 사항
+3. 서버 실행 프로덕션 모드에서 서버 실행:
 
-- 크롤링 데이터는 서버 시작 후 DB에 저장되며, DB는 한 번만 채워집니다.
-- 웹사이트 과도한 트래픽 차단을 방지하기 위해 요청 간격을 유의했습니다.
+   ```
+   node server.js
+   ```
 
-5.
+4. 개발 환경 실행 개발 모드에서 서버를 실행하고, 코드 변경 시 자동으로 재시작:
+
+   ```
+   npm run dev
+   ```
+
+## 📋 데이터베이스 초기화 방법
+
+1.  데이터베이스 설정 파일(config/db.js)에서 MySQL 연결 정보를 확인 및 수정.
+2.  db/db_setup.sql 파일을 실행하여 데이터베이스 초기화.
+
+## 🛡️ 보안
+
+- 환경 변수(.env)에 중요한 정보(JWT_SECRET, DB_PASSWORD 등)를 저장하여 민감 정보 보호.
+- 비밀번호는 bcrypt로 암호화하여 저장.
+- JWT를 사용하여 사용자 인증 및 권한 관리.
+
+## 📜 라이선스
+
+이 프로젝트는 MIT License 하에 배포됩니다. 자유롭게 수정 및 배포가 가능합니다.
