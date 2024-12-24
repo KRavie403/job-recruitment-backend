@@ -15,7 +15,8 @@ CREATE TABLE IF NOT EXISTS jobs (
     deadline DATE,                 -- 마감일
     sector VARCHAR(255),           -- 직무 분야
     salary VARCHAR(255),           -- 연봉
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    views INT DEFAULT 0           -- 조회수
 );
 
 -- 인덱스 추가
