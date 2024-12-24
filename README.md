@@ -124,7 +124,7 @@ project/
    npm install
    npm install express mysql axios cheerio dotenv json2csv
    npm install swagger-jsdoc swagger-ui-express
-   npm install jsonwebtoken bcrypt express-validator
+   npm install jsonwebtoken bcrypt bcryptjs express-validator
    npm install eslint prettier eslint-config-prettier eslint-plugin-prettier --save-dev
    npm install nodemon --save-dev
    ```
@@ -137,25 +137,19 @@ project/
 
 ## 📦 빌드 및 배포
 
-1. 프로덕션 환경 빌드 프로덕션 환경에서 실행하기 위해 Node.js 환경을 production으로 설정:
-
-   ```
-   export NODE_ENV=production
-   ```
-
-2. 프로덕션 의존성 설치 개발 의존성을 제외한 프로덕션 의존성만 설치:
+1. 프로덕션 의존성 설치 개발 의존성을 제외한 프로덕션 의존성만 설치:
 
    ```
    npm install --production
    ```
 
-3. 서버 실행 프로덕션 모드에서 서버 실행:
+2. 서버 실행 프로덕션 모드에서 서버 실행:
 
    ```
    node server.js
    ```
 
-4. 개발 환경 실행 개발 모드에서 서버를 실행하고, 코드 변경 시 자동으로 재시작:
+3. 개발 환경 실행 개발 모드에서 서버를 실행하고, 코드 변경 시 자동으로 재시작:
 
    ```
    npm run dev
