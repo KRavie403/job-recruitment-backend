@@ -122,7 +122,7 @@ router.delete("/:bookmarkId", authenticateToken, (req, res) => {
  *         name: limit
  *         schema:
  *           type: integer
- *         description: "페이지 당 항목 수 (기본값: 10)"
+ *         description: "페이지 당 항목 수 (기본값: 20)"
  *       - in: query
  *         name: sortField
  *         schema:
@@ -172,7 +172,7 @@ router.get("/", authenticateToken, (req, res) => {
     title,
     company,
     page = 1,
-    limit = 10,
+    limit = 20,
     sortField = "bookmarks.created_at",
     sortOrder = "DESC",
   } = req.query;

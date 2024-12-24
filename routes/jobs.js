@@ -56,11 +56,11 @@ const router = express.Router();
  *           default: 1
  *       - in: query
  *         name: limit
- *         description: "한 페이지에 보여줄 항목 수 (기본값: 10)"
+ *         description: "한 페이지에 보여줄 항목 수 (기본값: 20)"
  *         required: false
  *         schema:
  *           type: integer
- *           default: 10
+ *           default: 20
  *       - in: query
  *         name: sortField
  *         description: "정렬 필드 (기본값: created_at)"
@@ -117,7 +117,7 @@ router.get("/", (req, res) => {
     experience,
     sector,
     page = 1,
-    limit = 10,
+    limit = 20,
     sortField = "created_at",
     sortOrder = "DESC",
   } = req.query;
@@ -215,14 +215,33 @@ router.get("/", (req, res) => {
  *         description: 서버 내부 오류
  */
 router.get("/:id", (req, res) => {
-  const query = "SELECT * FROM jobs WHERE id = ?";
-  db.query(query, [req.params.id], (err, result) => {
-    if (err) return res.status(500).json({ message: "데이터베이스 오류" });
-    if (result.length === 0) return res.status(404).json({ message: "공고를 찾을 수 없습니다" });
-    res.status(200).json(result[0]);
+  const jobId = req.params.id;
+
+  const incrementViewsQuery = "UPDATE jobs SET views = views + 1 WHERE id = ?";
+  db.query(incrementViewsQuery, [jobId], (err) => {
+    if (err) return res.status(500).json({ message: "조회수 업데이트에 실패하였습니다." });
+
+    const jobQuery = "SELECT * FROM jobs WHERE id = ?";
+    db.query(jobQuery, [jobId], (err, results) => {
+      if (err) return res.status(500).json({ message: "데이터베이스 오류" });
+      if (results.length === 0) return res.status(404).json({ message: "공고를 찾을 수 없습니다." });
+
+      const relatedQuery = `
+        SELECT * FROM jobs
+        WHERE sector = ? AND id != ?
+        LIMIT 5
+      `;
+      db.query(relatedQuery, [results[0].sector, jobId], (relatedErr, relatedJobs) => {
+        if (relatedErr) return res.status(500).json({ message: "관련된 공고가 없습니다." });
+
+        res.status(200).json({
+          job: results[0],
+          related: relatedJobs,
+        });
+      });
+    });
   });
 });
-
 /**
  * @swagger
  * /jobs:
